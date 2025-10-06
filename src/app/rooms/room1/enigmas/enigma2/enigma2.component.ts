@@ -31,13 +31,31 @@ export class Enigma2Component {
   redDiscovered = signal(false);
   yellowDiscovered = signal(false);
 
+  // État des zones révélées complètement
+  redZoneRevealed = signal(false);
+  yellowZoneRevealed = signal(false);
+
+  // État de succès
+  isSuccess = signal(false);
+
   showHint = signal(false);
 
   // Couleurs cibles
-  private readonly RED_COLOR = '#B06040'; // Rouge pur
-  private readonly YELLOW_COLOR = '#6F382C'; // Jaune pur
+  private readonly RED_COLOR = '#F69874'; // Rouge plus très jaune
+  private readonly YELLOW_COLOR = '#C89864'; // Jaune plus très jaune
   private readonly TARGET_COLOR = '#DF986C'; // Couleur à deviner
   private revealRadius = 2; // 40px en rem
+
+  // Positions aléatoires des textes
+  redTextPosition = {
+    top: Math.random() * 60 + 20, // Entre 20% et 80%
+    left: Math.random() * 60 + 20, // Entre 20% et 80%
+  };
+
+  yellowTextPosition = {
+    top: Math.random() * 60 + 20, // Entre 20% et 80%
+    left: Math.random() * 60 + 20, // Entre 20% et 80%
+  };
 
   onRedZoneMouseMove(event: MouseEvent): void {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
@@ -55,6 +73,18 @@ export class Enigma2Component {
 
     // Découvrir la couleur jaune si on survole
     this.yellowDiscovered.set(true);
+  }
+
+  onRedZoneClick(): void {
+    if (!this.redZoneRevealed()) {
+      this.redZoneRevealed.set(true);
+    }
+  }
+
+  onYellowZoneClick(): void {
+    if (!this.yellowZoneRevealed()) {
+      this.yellowZoneRevealed.set(true);
+    }
   }
 
   updateRedValue(event: any): void {
@@ -90,7 +120,10 @@ export class Enigma2Component {
     const target = this.TARGET_COLOR.toUpperCase();
 
     if (guess === target) {
-      this.solved.emit(this.TARGET_COLOR);
+      this.isSuccess.set(true);
+      setTimeout(() => {
+        this.solved.emit(this.TARGET_COLOR);
+      }, 3000); // Délai pour voir le message de succès
     } else {
       this.attemptFailed.set(true);
       setTimeout(() => {
@@ -113,5 +146,26 @@ export class Enigma2Component {
 
   getRevealRadius(): number {
     return this.revealRadius;
+  }
+
+  getRedTextTop(): number {
+    return this.redTextPosition.top;
+  }
+
+  getRedTextLeft(): number {
+    return this.redTextPosition.left;
+  }
+
+  getYellowTextTop(): number {
+    return this.yellowTextPosition.top;
+  }
+
+  getYellowTextLeft(): number {
+    return this.yellowTextPosition.left;
+  }
+
+  // Vérifier si les deux zones sont révélées pour changer le curseur
+  areBothZonesRevealed(): boolean {
+    return this.redZoneRevealed() && this.yellowZoneRevealed();
   }
 }

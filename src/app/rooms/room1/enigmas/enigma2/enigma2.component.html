@@ -1,32 +1,39 @@
 <div class="enigma2-container">
   <div class="enigma-header">
-    <h2>Énigme 2 : Trouve la couleur</h2>
+    <h2>Énigme 2</h2>
     <button class="hint-btn" (click)="toggleHint()">{{ showHint() ? '✕' : '💡' }} Indice</button>
   </div>
 
   @if (showHint()) {
   <div class="hint-box">
     <p>Explorez les zones noires pour découvrir les couleurs cachées...</p>
-    <p>Utilisez les codes hexadécimaux pour reconstituer la couleur finale.</p>
+    <p>Cliquez sur les mots révélés puis décomposer les couleurs d'un pixel.</p>
+    <p>Utilisez les codes hexadécimaux décomposés pour reconstituer la couleur finale.</p>
     <p>💡 Astuce : Le # est obligatoire dans votre réponse !</p>
   </div>
   }
 
   <!-- Conteneur principal avec les deux zones -->
-  <div class="main-zones-container">
+  <div class="main-zones-container" [class.both-revealed]="areBothZonesRevealed()">
     <!-- Zone rouge (2/3) -->
     <div
       class="red-zone"
       (mousemove)="onRedZoneMouseMove($event)"
       [style.--mouse-x.px]="redZoneMouseX()"
       [style.--mouse-y.px]="redZoneMouseY()"
+      [class.revealed]="redZoneRevealed()"
     >
       <div class="color-overlay"></div>
-      @if (redDiscovered()) {
-        <div class="color-info">
-          <p class="hex-code">{{getRedHex()}}</p>
-        </div>
-      }
+      <div class="zone-content">
+        <p
+          class="zone-text"
+          (click)="onRedZoneClick()"
+          [style.top.%]="getRedTextTop()"
+          [style.left.%]="getRedTextLeft()"
+        >
+          {{ redZoneRevealed() ? getRedHex() : 'Andalous' }}
+        </p>
+      </div>
     </div>
 
     <!-- Zone jaune (1/3) -->
@@ -35,26 +42,33 @@
       (mousemove)="onYellowZoneMouseMove($event)"
       [style.--mouse-x.px]="yellowZoneMouseX()"
       [style.--mouse-y.px]="yellowZoneMouseY()"
+      [class.revealed]="yellowZoneRevealed()"
     >
       <div class="color-overlay"></div>
-      @if (yellowDiscovered()) {
-        <div class="color-info">
-          <p class="hex-code">{{getYellowHex()}}</p>
-        </div>
-      }
+      <div class="zone-content">
+        <p
+          class="zone-text"
+          (click)="onYellowZoneClick()"
+          [style.top.%]="getYellowTextTop()"
+          [style.left.%]="getYellowTextLeft()"
+        >
+          {{ yellowZoneRevealed() ? getYellowHex() : 'Guernica' }}
+        </p>
+      </div>
     </div>
   </div>
 
-  <!-- Section de mélange des couleurs -->
+  <!-- Section de mélange des couleurs - affichée seulement après avoir cliqué sur les deux zones -->
+  @if (redZoneRevealed() && yellowZoneRevealed()) {
   <div class="color-mixer-section">
     <div class="color-result-container">
       <div class="color-result-box" [style.background-color]="getMixedColor()"></div>
-      <p class="hex-display">{{getHexColor()}}</p>
+      <p class="hex-display">{{ getHexColor() }}</p>
     </div>
 
     <div class="color-slider-container">
       <div class="slider-group">
-        <label for="red-slider">Rouge ({{redValue()}})</label>
+        <label for="red-slider">Rouge ({{ redValue() }})</label>
         <input
           type="range"
           id="red-slider"
@@ -67,7 +81,7 @@
       </div>
 
       <div class="slider-group">
-        <label for="green-slider">Vert ({{greenValue()}})</label>
+        <label for="green-slider">Vert ({{ greenValue() }})</label>
         <input
           type="range"
           id="green-slider"
@@ -80,7 +94,7 @@
       </div>
 
       <div class="slider-group">
-        <label for="blue-slider">Bleu ({{blueValue()}})</label>
+        <label for="blue-slider">Bleu ({{ blueValue() }})</label>
         <input
           type="range"
           id="blue-slider"
@@ -93,40 +107,46 @@
       </div>
     </div>
   </div>
+  }
 
   <!-- Section de guess -->
   <div class="guess-section">
-    <h3>🎯 Devinez la couleur finale</h3>
-    <p class="instructions">Entrez le code hexadécimal de la couleur qui combine les deux zones découvertes :</p>
-    
     <div class="input-group">
-      <input 
-        type="text" 
+      <input
+        type="text"
         [(ngModel)]="colorGuess"
         placeholder="#DF986C"
         class="color-input"
         [class.error]="attemptFailed()"
         (keyup.enter)="onGuessSubmit()"
       />
-      <button 
-        class="submit-btn"
-        (click)="onGuessSubmit()"
-        [disabled]="!colorGuess()"
-      >
+      <button class="submit-btn" (click)="onGuessSubmit()" [disabled]="!colorGuess()">
         Valider
       </button>
     </div>
 
     @if (attemptFailed()) {
-      <div class="error-message">
-        ❌ Ce n'est pas la bonne couleur. Réessayez !
-      </div>
-    }
-
-    @if (redDiscovered() && yellowDiscovered()) {
-      <div class="hint-after-reveal">
-        💡 Vous avez découvert les composantes : {{getRedHex()}} + {{getYellowHex()}} = ?
-      </div>
+    <div class="error-message">❌ Ce n'est pas le bon code. Réessayez !</div>
+    } @if (redZoneRevealed() && yellowZoneRevealed() && showHint()) {
+    <div class="hint-after-reveal">
+      💡 Décomposez chaque code hexa en RGB : {{ getRedHex() }} = R+G+B. Additionnez les composantes
+      pour obtenir la couleur finale !
+    </div>
     }
   </div>
+
+  <!-- Message de succès -->
+  @if (isSuccess()) {
+  <div class="success-overlay">
+    <div class="success-message">
+      <div class="success-content">
+        <span class="success-icon">🎨</span>
+        <h3>Bravo !</h3>
+        <p>Vous avez trouvé la couleur mystère !</p>
+        <p class="color-name">« Terre d'Argile »</p>
+        <div class="color-sample" [style.background-color]="'#DF986C'"></div>
+      </div>
+    </div>
+  </div>
+  }
 </div>
