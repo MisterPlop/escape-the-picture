@@ -7,37 +7,89 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './enigma2.component.html',
-  styleUrl: './enigma2.component.scss'
+  styleUrl: './enigma2.component.scss',
 })
 export class Enigma2Component {
   @Output() solved = new EventEmitter<string>();
 
-  mouseX = signal(0);
-  mouseY = signal(0);
-  colorInput = signal('');
-  showHint = signal(false);
+  // Coordonnées de souris pour chaque zone
+  redZoneMouseX = signal(0);
+  redZoneMouseY = signal(0);
+  yellowZoneMouseX = signal(0);
+  yellowZoneMouseY = signal(0);
+
+  // Valeurs des sliders RGB
+  redValue = signal(0);
+  greenValue = signal(0);
+  blueValue = signal(0);
+
+  // Input de guess
+  colorGuess = signal('');
   attemptFailed = signal(false);
-  revealedZones = signal<{ red: boolean; yellow: boolean }>({ red: false, yellow: false });
 
-  // Couleur cible
-  private readonly TARGET_COLOR = '#DF986C';
-  private readonly TARGET_COLOR_VARIATIONS = [
-    '#DF986C',
-    '#df986c',
-    'DF986C',
-    'df986c',
-  ];
+  // État des découvertes
+  redDiscovered = signal(false);
+  yellowDiscovered = signal(false);
 
-  onMouseMove(event: MouseEvent): void {
-    const rect = (event.target as HTMLElement).getBoundingClientRect();
-    this.mouseX.set(event.clientX - rect.left);
-    this.mouseY.set(event.clientY - rect.top);
+  showHint = signal(false);
+
+  // Couleurs cibles
+  private readonly RED_COLOR = '#B06040'; // Rouge pur
+  private readonly YELLOW_COLOR = '#6F382C'; // Jaune pur
+  private readonly TARGET_COLOR = '#DF986C'; // Couleur à deviner
+  private revealRadius = 2; // 40px en rem
+
+  onRedZoneMouseMove(event: MouseEvent): void {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    this.redZoneMouseX.set(event.clientX - rect.left);
+    this.redZoneMouseY.set(event.clientY - rect.top);
+
+    // Découvrir la couleur rouge si on survole
+    this.redDiscovered.set(true);
   }
 
-  onColorSubmit(): void {
-    const input = this.colorInput().trim();
-    
-    if (this.TARGET_COLOR_VARIATIONS.includes(input)) {
+  onYellowZoneMouseMove(event: MouseEvent): void {
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
+    this.yellowZoneMouseX.set(event.clientX - rect.left);
+    this.yellowZoneMouseY.set(event.clientY - rect.top);
+
+    // Découvrir la couleur jaune si on survole
+    this.yellowDiscovered.set(true);
+  }
+
+  updateRedValue(event: any): void {
+    const value = parseInt(event.target.value);
+    this.redValue.set(value);
+  }
+
+  updateGreenValue(event: any): void {
+    const value = parseInt(event.target.value);
+    this.greenValue.set(value);
+  }
+
+  updateBlueValue(event: any): void {
+    const value = parseInt(event.target.value);
+    this.blueValue.set(value);
+  }
+
+  getMixedColor(): string {
+    return `rgb(${this.redValue()}, ${this.greenValue()}, ${this.blueValue()})`;
+  }
+
+  getHexColor(): string {
+    const toHex = (value: number) => {
+      const hex = value.toString(16).toUpperCase();
+      return hex.length === 1 ? '0' + hex : hex;
+    };
+
+    return `#${toHex(this.redValue())}${toHex(this.greenValue())}${toHex(this.blueValue())}`;
+  }
+
+  onGuessSubmit(): void {
+    const guess = this.colorGuess().trim().toUpperCase();
+    const target = this.TARGET_COLOR.toUpperCase();
+
+    if (guess === target) {
       this.solved.emit(this.TARGET_COLOR);
     } else {
       this.attemptFailed.set(true);
@@ -47,15 +99,19 @@ export class Enigma2Component {
     }
   }
 
+  getRedHex(): string {
+    return this.RED_COLOR;
+  }
+
+  getYellowHex(): string {
+    return this.YELLOW_COLOR;
+  }
+
   toggleHint(): void {
     this.showHint.set(!this.showHint());
   }
 
-  onRedZoneClick(): void {
-    this.revealedZones.set({ ...this.revealedZones(), red: true });
-  }
-
-  onYellowZoneClick(): void {
-    this.revealedZones.set({ ...this.revealedZones(), yellow: true });
+  getRevealRadius(): number {
+    return this.revealRadius;
   }
 }
