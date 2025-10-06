@@ -1,0 +1,10 @@
+# Dossiers générés
+dist/
+node_modules/
+coverage/
+.angular/
+
+# Fichiers
+package-lock.json
+yarn.lock
+*.min.js
