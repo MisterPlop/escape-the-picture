@@ -1,0 +1,99 @@
+<div class="enigma2-container">
+  <div class="enigma-header">
+    <h2>Énigme 2 : Trouve la couleur</h2>
+    <button class="hint-btn" (click)="toggleHint()">
+      {{ showHint() ? '✕' : '💡' }} Indice
+    </button>
+  </div>
+
+  @if (showHint()) {
+    <div class="hint-box">
+      <p>La couleur majeure du tableau est cachée sous un voile...</p>
+      <p>Explorez l'image pour découvrir les composantes de la couleur.</p>
+      <p>💡 Astuce : Cherchez les zones colorées et notez leurs proportions !</p>
+    </div>
+  }
+
+  <div class="canvas-wrapper">
+    <div 
+      class="color-discovery-container"
+      (mousemove)="onMouseMove($event)"
+    >
+      <!-- Zone rouge (2/3) -->
+      <div 
+        class="color-zone red-zone"
+        [class.revealed]="revealedZones().red"
+        [style.--mouse-x.px]="mouseX()"
+        [style.--mouse-y.px]="mouseY()"
+        (click)="onRedZoneClick()"
+      >
+        <div class="zone-content">
+          @if (revealedZones().red) {
+            <div class="color-info">
+              <div class="color-sample" style="background: #FF0000;"></div>
+              <p class="color-name">Rouge</p>
+              <p class="color-proportion">⅔ de la couleur</p>
+            </div>
+          }
+        </div>
+        <div class="overlay"></div>
+      </div>
+
+      <!-- Zone jaune (1/3) -->
+      <div 
+        class="color-zone yellow-zone"
+        [class.revealed]="revealedZones().yellow"
+        [style.--mouse-x.px]="mouseX()"
+        [style.--mouse-y.px]="mouseY()"
+        (click)="onYellowZoneClick()"
+      >
+        <div class="zone-content">
+          @if (revealedZones().yellow) {
+            <div class="color-info">
+              <div class="color-sample" style="background: #FFFF00;"></div>
+              <p class="color-name">Jaune</p>
+              <p class="color-proportion">⅓ de la couleur</p>
+            </div>
+          }
+        </div>
+        <div class="overlay"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="color-input-section">
+    <p class="instructions">
+      🎨 Quelle est la couleur majeure du tableau ? Entrez le code hexadécimal :
+    </p>
+    
+    <div class="input-group">
+      <input 
+        type="text" 
+        [(ngModel)]="colorInput"
+        placeholder="#DF986C ou DF986C"
+        class="color-input"
+        [class.error]="attemptFailed()"
+        (keyup.enter)="onColorSubmit()"
+      />
+      <button 
+        class="submit-btn"
+        (click)="onColorSubmit()"
+        [disabled]="!colorInput()"
+      >
+        Valider
+      </button>
+    </div>
+
+    @if (attemptFailed()) {
+      <div class="error-message">
+        ❌ Ce n'est pas la bonne couleur. Réessayez !
+      </div>
+    }
+
+    @if (revealedZones().red && revealedZones().yellow) {
+      <div class="hint-after-reveal">
+        💡 Vous avez découvert les composantes : mélangez ⅔ de rouge avec ⅓ de jaune...
+      </div>
+    }
+  </div>
+</div>

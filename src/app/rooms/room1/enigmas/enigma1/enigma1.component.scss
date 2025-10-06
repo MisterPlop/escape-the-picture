@@ -1,0 +1,207 @@
+.enigma1-container {
+  width: 100%;
+  max-width: 56.25rem; // 900px / 16 = 56.25rem
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.enigma-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+
+  h2 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin: 0;
+  }
+}
+
+.hint-btn {
+  padding: 0.5rem 1rem;
+  background: #3498db;
+  color: white;
+  border: none;
+  border-radius: 0.5rem; // 8px / 16 = 0.5rem
+  cursor: pointer;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #2980b9;
+    transform: translateY(-0.125rem); // -2px / 16 = -0.125rem
+  }
+}
+
+.hint-box {
+  background: #fff3cd;
+  border: 0.125rem solid #ffc107; // 2px / 16 = 0.125rem
+  border-radius: 0.5rem; // 8px / 16 = 0.5rem
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+  animation: slideDown 0.3s ease;
+
+  p {
+    margin: 0.5rem 0;
+    color: #856404;
+
+    &:first-child {
+      font-weight: 600;
+    }
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-0.625rem); // -10px / 16 = -0.625rem
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.image-container {
+  position: relative;
+  width: 62.5rem; // 1000px / 16 = 62.5rem
+  height: 43.75rem; // 700px / 16 = 43.75rem
+  border-radius: 0.75rem; // 12px / 16 = 0.75rem
+  overflow: hidden;
+  box-shadow: 0 0.625rem 2.5rem rgba(0, 0, 0, 0.2); // 0 10px 40px
+  cursor: none; // Cache le curseur par défaut pour ne garder que l'émoji
+  background-color: #3a5998; // Couleur unie pour indiquer du contenu caché
+  margin: 0 auto; // Centre horizontalement
+
+  &.revealed {
+    .color-overlay {
+      opacity: 0;
+      pointer-events: none;
+    }
+  }
+}
+
+.bw-layer {
+  position: absolute;
+  width: 3.125rem; // 50px / 16 = 3.125rem
+  height: 3.125rem; // 50px / 16 = 3.125rem
+  z-index: 3; // Au-dessus de l'overlay pour être cliquable
+
+  // Masquer l'image par défaut avec un clip-path circulaire qui suit la souris
+  clip-path: circle(
+    var(--reveal-radius, 2.5rem) at var(--mouse-x, -12.5rem) var(--mouse-y, -12.5rem)
+  ); // Utilise la variable revealRadius du composant (40px = 2.5rem, -200px = -12.5rem)
+  transition: clip-path 0.1s ease;
+
+  img.artwork {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+    cursor: pointer;
+  }
+}
+
+.color-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(135deg, rgba(232, 184, 159, 0.85) 0%, rgba(214, 138, 94, 0.85) 100%);
+  transition: opacity 1s ease;
+}
+
+.success-message {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url('/assets/images/picasso-autoportrait-color.jpg');
+  background-size: cover;
+  background-position: center;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.5s ease;
+  pointer-events: none;
+
+  .success-content {
+    text-align: center;
+    color: white;
+    background: rgba(0, 0, 0, 0.6); // Fond semi-transparent pour la lisibilité
+    padding: 2rem;
+    border-radius: 1rem;
+    backdrop-filter: blur(4px);
+
+    .check-icon {
+      font-size: 4rem;
+      display: block;
+      animation: scaleIn 0.5s ease;
+    }
+
+    p {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.instructions {
+  text-align: center;
+  margin-top: 2rem;
+
+  p {
+    font-size: 1.1rem;
+    color: #7f8c8d;
+    font-style: italic;
+  }
+}
+
+// Curseur personnalisé
+.image-container::after {
+  content: '👁️';
+  position: absolute;
+  font-size: 1rem;
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  left: var(--mouse-x, 31.25rem); // Centre horizontal : 62.5rem / 2 = 31.25rem
+  top: var(--mouse-y, 21.875rem); // Centre vertical : 43.75rem / 2 = 21.875rem
+  z-index: 100;
+  filter: drop-shadow(0 0 0.9rem rgba(0, 0, 0, 1)); // 5px / 16 = 0.3125rem
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  line-height: 1;
+}

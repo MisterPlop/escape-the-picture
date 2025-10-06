@@ -1,0 +1,63 @@
+<div class="final-reveal-container">
+  <div class="celebration-banner">
+    <h1>🎉 Félicitations ! 🎉</h1>
+    <p>Vous avez résolu toutes les énigmes de la Salle 1 !</p>
+  </div>
+
+  <div class="artwork-section">
+    <div class="artwork-frame">
+      <img 
+        src="/assets/images/picasso-autoportrait-color.jpg" 
+        alt="Autoportrait à la mèche - Picasso"
+        class="artwork-image"
+      />
+      <div class="frame-border"></div>
+    </div>
+
+    <div class="artwork-info">
+      <h2 class="artwork-title">{{ artworkTitle }}</h2>
+      <p class="artwork-artist">{{ artist }}</p>
+      <p class="artwork-year">{{ year }}</p>
+
+      <div class="color-reveal">
+        <h3>Couleur majeure découverte</h3>
+        <div class="color-display">
+          <div 
+            class="color-swatch" 
+            [style.background]="color"
+          ></div>
+          <div class="color-details">
+            <p class="color-code">{{ color }}</p>
+            <p class="color-composition">{{ colorDescription }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="enigmas-summary">
+        <h3>Récapitulatif des énigmes</h3>
+        <div class="summary-grid">
+          <div class="summary-item">
+            <span class="check-icon">✓</span>
+            <span class="summary-text">Image en noir & blanc découverte</span>
+          </div>
+          <div class="summary-item">
+            <span class="check-icon">✓</span>
+            <span class="summary-text">Couleur {{ color }} trouvée</span>
+          </div>
+          <div class="summary-item">
+            <span class="check-icon">✓</span>
+            <span class="summary-text">Suite numérique déchiffrée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="navigation-section">
+    <button class="continue-btn" (click)="onContinue()">
+      Continuer vers la Salle 2
+      <span class="arrow">→</span>
+    </button>
+    <p class="coming-soon">Préparez-vous pour de nouvelles énigmes...</p>
+  </div>
+</div>

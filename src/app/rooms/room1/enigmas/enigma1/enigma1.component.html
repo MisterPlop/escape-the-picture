@@ -1,0 +1,61 @@
+<div class="enigma1-container">
+  <div class="enigma-header">
+    <h2>Énigme 1 : Découvrir l'image</h2>
+    <button class="hint-btn" (click)="toggleHint()">{{ showHint() ? '✕' : '💡' }} Indice</button>
+  </div>
+
+  @if (showHint()) {
+  <div class="hint-box">
+    <p>Déplacez votre curseur sur l'image pour révéler ce qui se cache dessous...</p>
+    <p>Cliquez sur l'image en noir et blanc une fois que vous l'avez trouvée !</p>
+  </div>
+  }
+
+  <div class="canvas-wrapper">
+    <div
+      class="image-container"
+      (mousemove)="onMouseMove($event)"
+      [class.revealed]="revealed()"
+      [style.--mouse-x.px]="mouseX()"
+      [style.--mouse-y.px]="mouseY()"
+    >
+      <div
+        class="bw-layer"
+        [style.top.px]="imagePosition.top"
+        [style.left.px]="imagePosition.left"
+        [style.--mouse-x.px]="getRelativeMouseX()"
+        [style.--mouse-y.px]="getRelativeMouseY()"
+        [style.--reveal-radius.px]="getRevealRadius()"
+      >
+        <img
+          src="/assets/images/picasso-autoportrait-bw.jpg"
+          alt="Autoportrait Picasso N&B"
+          class="artwork"
+          (click)="onImageClick($event)"
+        />
+      </div>
+
+      <!-- Calque de couleur avec effet de révélation -->
+      <div
+        class="color-overlay"
+        [style.--mouse-x.px]="mouseX()"
+        [style.--mouse-y.px]="mouseY()"
+        [style.--image-x.px]="getImageCenterX()"
+        [style.--image-y.px]="getImageCenterY()"
+      ></div>
+
+      <!-- Image révélée -->
+      @if (revealed()) {
+      <div class="success-message">
+        <div class="success-content">
+          <p>Image découverte ! ✓</p>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+
+  <div class="instructions">
+    <p>🔍 Saurez vous aligner votre oeil à la lentille?</p>
+  </div>
+</div>
