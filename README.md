@@ -1,59 +1,47 @@
-# EscapeThePicture
+# Escape The Picture
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.3.4.
+Escape The Picture est un escape game web immersif où chaque salle propose une énigme interactive autour de l’art et de la découverte. Le joueur doit résoudre des puzzles visuels, des jeux de couleurs et des défis logiques pour progresser et révéler l’histoire cachée derrière un mystérieux autoportrait.
 
-## Development server
+## Histoire
 
-To start a local development server, run:
+Vous êtes plongé dans un musée virtuel où chaque tableau cache un secret. Un autoportrait énigmatique attire votre attention : pour en percer le mystère, il faudra explorer, manipuler les couleurs, décrypter des indices et faire preuve d’observation. Chaque salle vous rapproche de la vérité sur l’artiste et son œuvre, mais le chemin est semé d’énigmes et de surprises…
 
-```bash
-ng serve
-```
+L’aventure est conçue pour être universelle : chaque joueur peut imaginer sa propre histoire autour du tableau et des énigmes, laissant place à la créativité et à la découverte.
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Présentation de l’application
 
-## Code scaffolding
+L’application propose plusieurs salles (rooms), chacune avec ses propres énigmas :
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+- **Salle 1** : Découverte d’un autoportrait à travers des mécanismes de révélation d’image, de mélange de couleurs et de décryptage de nom d’artiste façon Motus/Tusmo.
+- **Salle 2** (à venir) : Nouvelles énigmes et mécaniques, réutilisant la structure modulaire.
 
-```bash
-ng generate component component-name
-```
+Chaque énigme est conçue pour être intuitive, visuelle et accessible, avec une progression guidée et des feedbacks interactifs.
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Architecture et technologies
 
-```bash
-ng generate --help
-```
+- **Angular 18+** : Application SPA moderne, composants standalone, gestion des routes et du state.
+- **Signals** : Utilisation des signals pour la réactivité et le suivi d’état des énigmes.
+- **SCSS** : Styles modulaires, responsive, animations, conversion systématique des unités en rem.
+- **Modularité** : Composants partagés pour le header, le footer, la navigation et les boutons globaux (recommencer, réinitialiser énigme).
+- **Développement** : Bouton dev discret pour auto-solve chaque énigme pendant les tests.
+- **Extensibilité** : Architecture pensée pour ajouter facilement de nouvelles salles et énigmes.
 
-## Building
-
-To build the project run:
+## Lancer le projet
 
 ```bash
-ng build
+npm install
+npm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Accédez à l’application sur [http://localhost:4200](http://localhost:4200).
 
-## Running unit tests
+## Structure des dossiers
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+- `src/app/rooms/` : Composants et styles des salles
+- `src/app/shared/` : Header, footer, composants réutilisables
+- `src/assets/` : Images et ressources graphiques
+- `src/app/services/` : Gestion du state et logique de progression
 
-```bash
-ng test
-```
+## Contribuer
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+Les contributions sont les bienvenues ! L’architecture modulaire permet d’ajouter facilement de nouvelles salles, énigmes ou mécaniques de jeu. N’hésitez pas à proposer des idées ou à ouvrir des issues.
