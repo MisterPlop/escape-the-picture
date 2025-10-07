@@ -1,10 +1,80 @@
 <div class="enigma4-container">
   <div class="enigma-header">
-    <h2>Énigme 4 : Date de naissance de Picasso</h2>
+    <h2>Énigme 4</h2>
+    <button class="hint-btn" (click)="toggleHint()">{{ showHint() ? '✕' : '💡' }} Indice</button>
   </div>
 
-  <div class="content-placeholder">
-    <p>🚧 Énigme en cours de développement...</p>
-    <p>Utilisez le bouton 🔓 en bas à droite pour passer à l'énigme suivante.</p>
+  @if (showHint()) {
+  <div class="hint-box">
+    <p>
+      Concentrez-vous sur les anachronismes, le numérique n'était pas encore d'actualité à cette
+      époque... La clé se trouve peut-être ici ! Lisez bien les indices... Tous ne sont pas bons à
+      prendre.
+    </p>
   </div>
+  } @if (!puzzleSolved()) {
+  <!-- Image avec zones cliquables -->
+  <div class="image-container">
+    <img src="assets/images/enigme-4.png" alt="Indices visuels" class="clue-image" />
+
+    <!-- Zones cliquables superposées (rectangles invisibles) -->
+    @for (clue of clues(); track clue.id) {
+    <div
+      class="clue-zone"
+      [class.discovered]="clue.discovered"
+      [style.left.%]="clue.x"
+      [style.top.%]="clue.y"
+      [style.width.px]="clue.width"
+      [style.height.px]="clue.height"
+      (click)="onClueClick(clue)"
+      [title]="clue.discovered ? '✓ Découvert' : 'Cliquez pour découvrir'"
+    ></div>
+    }
+  </div>
+
+  <!-- Panneau des indices découverts (vrais ET faux) -->
+  <div class="clues-panel">
+    <h3>Indices découverts</h3>
+    @if (discoveredRealClues.length === 0) {
+    <p class="no-clues">Cliquez sur l'image pour découvrir les indices...</p>
+    } @else {
+    <div class="clues-grid">
+      @for (clue of discoveredRealClues; track clue.id) {
+      <div class="clue-card">
+        <h4>{{ clue.title }}</h4>
+        <p>{{ clue.content }}</p>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- Section d'entrée de date -->
+  <div class="date-input-section">
+    <label for="birthdate">Trouvez la date :</label>
+    <input
+      type="text"
+      id="birthdate"
+      [value]="userDate()"
+      (input)="formatDateInput($event)"
+      (keypress)="onKeyPress($event)"
+      (blur)="checkDate()"
+      placeholder="JJ/MM/AAAA"
+      maxlength="10"
+      class="date-input"
+      [class.error]="dateAttemptFailed()"
+    />
+    <button type="button" class="validate-btn" (click)="checkDate()">Valider</button>
+  </div>
+
+  @if (dateAttemptFailed()) {
+  <div class="error-message">❌ Ce n'est pas la bonne date. Réessayez !</div>
+  } } @else {
+  <!-- Message de succès -->
+  <div class="success-message">
+    <div class="success-icon">✓</div>
+    <h3>Bravo !</h3>
+    <p>Vous avez trouvé la date de naissance de Pablo Picasso : 25 octobre 1881</p>
+  </div>
+  }
 </div>

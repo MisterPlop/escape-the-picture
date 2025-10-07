@@ -2,6 +2,11 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-image: url('../../../assets/images/fond.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 }
 
 .room-header {
@@ -112,7 +117,6 @@
 
 .room-content {
   flex: 1;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   padding: 2rem 0;
 }
 
