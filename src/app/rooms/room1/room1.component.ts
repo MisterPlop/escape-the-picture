@@ -1,5 +1,6 @@
 import { Component, computed, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { GameStateService } from '../../services/game-state.service';
 import { Enigma1Component } from './enigmas/enigma1/enigma1.component';
 import { Enigma2Component } from './enigmas/enigma2/enigma2.component';
@@ -21,6 +22,7 @@ import { FinalRevealComponent } from './final-reveal/final-reveal.component';
 })
 export class Room1Component implements OnInit, OnDestroy {
   private gameState = inject(GameStateService);
+  private router = inject(Router);
   private resetAllListener?: (event: Event) => void;
   private resetEnigmaListener?: (event: Event) => void;
 
@@ -56,8 +58,7 @@ export class Room1Component implements OnInit, OnDestroy {
   }
 
   onContinueToRoom2(): void {
-    // TODO: Navigation vers la salle 2
-    alert("Salle 2 à venir ! Merci d'avoir joué. 🎉");
+    this.router.navigate(['/room2']);
   }
 
   resetRoom(): void {

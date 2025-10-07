@@ -1,0 +1,68 @@
+<div class="room2-container">
+  <header class="room-header">
+    <div class="header-content">
+      <h1>Salle 2 : Les Secrets de Picasso</h1>
+      <div class="progress-bar">
+        <div
+          class="progress-step"
+          [class.active]="currentEnigma() >= 4"
+          [class.completed]="currentEnigma() > 4"
+        >
+          <span class="step-number">4</span>
+          @if (currentEnigma() >= 4) {
+          <span class="step-label">Date</span>
+          }
+        </div>
+        <div class="progress-line" [class.active]="currentEnigma() > 4"></div>
+        <div
+          class="progress-step"
+          [class.active]="currentEnigma() >= 5"
+          [class.completed]="currentEnigma() > 5"
+        >
+          <span class="step-number">5</span>
+          @if (currentEnigma() >= 5) {
+          <span class="step-label">Énigme 5</span>
+          }
+        </div>
+        <div class="progress-line" [class.active]="currentEnigma() > 5"></div>
+        <div
+          class="progress-step"
+          [class.active]="currentEnigma() >= 6"
+          [class.completed]="currentEnigma() > 6"
+        >
+          <span class="step-number">6</span>
+          @if (currentEnigma() >= 6) {
+          <span class="step-label">Énigme 6</span>
+          }
+        </div>
+        <div class="progress-line" [class.active]="currentEnigma() > 6"></div>
+        <div
+          class="progress-step"
+          [class.active]="currentEnigma() >= 7"
+          [class.completed]="isComplete()"
+        >
+          <span class="step-number">✓</span>
+          @if (currentEnigma() >= 7) {
+          <span class="step-label">Complété</span>
+          }
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="room-content">
+    @if (!isComplete()) {
+    <div class="enigma-wrapper">
+      @switch (currentEnigma()) { @case (4) {
+      <app-enigma4 (solved)="onEnigma4Solved($event)"></app-enigma4>
+      } @case (5) {
+      <app-enigma5 (solved)="onEnigma5Solved($event)"></app-enigma5>
+      } @case (6) {
+      <app-enigma6 (solved)="onEnigma6Solved($event)"></app-enigma6>
+      } }
+    </div>
+    } @else {
+    <app-final-reveal-room2 (continue)="onContinueToRoom3()"></app-final-reveal-room2>
+    }
+  </main>
+</div>

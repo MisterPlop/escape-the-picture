@@ -1,12 +1,12 @@
 import { Injectable, signal } from '@angular/core';
-import { GameState, INITIAL_GAME_STATE, Room1State } from '../models/game-state.model';
+import { GameState, INITIAL_GAME_STATE, Room1State, Room2State } from '../models/game-state.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class GameStateService {
   private readonly STORAGE_KEY = 'escape-the-picture-state';
-  
+
   // Signal pour l'état réactif
   gameState = signal<GameState>(this.loadState());
 
@@ -21,7 +21,7 @@ export class GameStateService {
       try {
         return JSON.parse(stored);
       } catch (e) {
-        console.error('Erreur lors du chargement de l\'état:', e);
+        console.error("Erreur lors du chargement de l'état:", e);
         return INITIAL_GAME_STATE;
       }
     }
@@ -67,8 +67,8 @@ export class GameStateService {
       room1: {
         ...state.room1,
         enigma1Solved: true,
-        currentEnigma: 2
-      }
+        currentEnigma: 2,
+      },
     });
   }
 
@@ -80,8 +80,8 @@ export class GameStateService {
         ...state.room1,
         enigma2Solved: true,
         discoveredColor: color,
-        currentEnigma: 3
-      }
+        currentEnigma: 3,
+      },
     });
   }
 
@@ -93,8 +93,8 @@ export class GameStateService {
         ...state.room1,
         enigma3Solved: true,
         discoveredSequence: sequence,
-        currentEnigma: 4
-      }
+        currentEnigma: 4,
+      },
     });
   }
 
@@ -107,7 +107,76 @@ export class GameStateService {
     const state = this.gameState();
     this.saveState({
       ...state,
-      room1: INITIAL_GAME_STATE.room1
+      room1: INITIAL_GAME_STATE.room1,
+    });
+  }
+
+  // Room 2 methods
+  getRoom2State(): Room2State {
+    return this.gameState().room2;
+  }
+
+  isEnigma4Solved(): boolean {
+    return this.gameState().room2.enigma4Solved;
+  }
+
+  isEnigma5Solved(): boolean {
+    return this.gameState().room2.enigma5Solved;
+  }
+
+  isEnigma6Solved(): boolean {
+    return this.gameState().room2.enigma6Solved;
+  }
+
+  isRoom2Complete(): boolean {
+    const room2 = this.gameState().room2;
+    return room2.enigma4Solved && room2.enigma5Solved && room2.enigma6Solved;
+  }
+
+  solveEnigma4(date: string): void {
+    const state = this.gameState();
+    this.saveState({
+      ...state,
+      room2: {
+        ...state.room2,
+        enigma4Solved: true,
+        discoveredDate: date,
+        currentEnigma: 5,
+      },
+    });
+  }
+
+  solveEnigma5(result: string): void {
+    const state = this.gameState();
+    this.saveState({
+      ...state,
+      room2: {
+        ...state.room2,
+        enigma5Solved: true,
+        enigma5Result: result,
+        currentEnigma: 6,
+      },
+    });
+  }
+
+  solveEnigma6(result: string): void {
+    const state = this.gameState();
+    this.saveState({
+      ...state,
+      room2: {
+        ...state.room2,
+        enigma6Solved: true,
+        enigma6Result: result,
+        currentEnigma: 7,
+      },
+    });
+  }
+
+  resetRoom2(): void {
+    const state = this.gameState();
+    this.saveState({
+      ...state,
+      room2: INITIAL_GAME_STATE.room2,
     });
   }
 }
