@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -9,5 +9,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app-header.component.scss',
 })
 export class AppHeaderComponent {
-  // Header global de l'application
+  @Output() resetAll = new EventEmitter<void>();
+  @Output() resetEnigma = new EventEmitter<void>();
+
+  onResetAll(): void {
+    this.resetAll.emit();
+  }
+
+  onResetEnigma(): void {
+    this.resetEnigma.emit();
+  }
 }

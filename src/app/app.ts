@@ -8,7 +8,7 @@ import { AppFooterComponent } from './shared/footer/app-footer.component';
   standalone: true,
   imports: [RouterOutlet, AppHeaderComponent, AppFooterComponent],
   template: `
-    <app-header></app-header>
+    <app-header (resetAll)="onResetAll()" (resetEnigma)="onResetEnigma()"></app-header>
     <router-outlet></router-outlet>
     <app-footer (devSolve)="onDevSolve()"></app-footer>
   `,
@@ -16,6 +16,14 @@ import { AppFooterComponent } from './shared/footer/app-footer.component';
 })
 export class AppComponent {
   title = 'Escape The Picture';
+
+  onResetAll(): void {
+    window.dispatchEvent(new CustomEvent('reset-all'));
+  }
+
+  onResetEnigma(): void {
+    window.dispatchEvent(new CustomEvent('reset-enigma'));
+  }
 
   onDevSolve(): void {
     // Émettre un événement global pour résoudre l'énigme actuelle

@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { GameStateService } from '../../services/game-state.service';
 import { Enigma1Component } from './enigmas/enigma1/enigma1.component';
@@ -19,11 +19,29 @@ import { FinalRevealComponent } from './final-reveal/final-reveal.component';
   templateUrl: './room1.component.html',
   styleUrl: './room1.component.scss',
 })
-export class Room1Component {
+export class Room1Component implements OnInit, OnDestroy {
   private gameState = inject(GameStateService);
+  private resetAllListener?: (event: Event) => void;
+  private resetEnigmaListener?: (event: Event) => void;
 
   currentEnigma = computed(() => this.gameState.getCurrentEnigma());
   isComplete = computed(() => this.gameState.isRoom1Complete());
+
+  ngOnInit(): void {
+    this.resetAllListener = () => this.resetRoom();
+    this.resetEnigmaListener = () => this.resetCurrentEnigma();
+    window.addEventListener('reset-all', this.resetAllListener);
+    window.addEventListener('reset-enigma', this.resetEnigmaListener);
+  }
+
+  ngOnDestroy(): void {
+    if (this.resetAllListener) {
+      window.removeEventListener('reset-all', this.resetAllListener);
+    }
+    if (this.resetEnigmaListener) {
+      window.removeEventListener('reset-enigma', this.resetEnigmaListener);
+    }
+  }
 
   onEnigma1Solved(): void {
     this.gameState.solveEnigma1();
