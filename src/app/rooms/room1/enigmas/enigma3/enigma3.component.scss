@@ -13,7 +13,7 @@
 
   h2 {
     font-size: 1.8rem;
-    color: #2c3e50;
+    color: #fcfcfc;
     margin: 0;
   }
 
@@ -283,6 +283,13 @@
 // Section de saisie de la séquence
 .sequence-input-section {
   margin-top: 3rem;
+
+  .instructions {
+    text-align: center;
+    font-size: 1.1rem;
+    color: #fcfcfc;
+    margin-bottom: 1rem;
+  }
 
   .input-group {
     display: flex;
