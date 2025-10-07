@@ -14,10 +14,10 @@ import { FinalRevealComponent } from './final-reveal/final-reveal.component';
     Enigma1Component,
     Enigma2Component,
     Enigma3Component,
-    FinalRevealComponent
+    FinalRevealComponent,
   ],
   templateUrl: './room1.component.html',
-  styleUrl: './room1.component.scss'
+  styleUrl: './room1.component.scss',
 })
 export class Room1Component {
   private gameState = inject(GameStateService);
@@ -39,12 +39,18 @@ export class Room1Component {
 
   onContinueToRoom2(): void {
     // TODO: Navigation vers la salle 2
-    alert('Salle 2 à venir ! Merci d\'avoir joué. 🎉');
+    alert("Salle 2 à venir ! Merci d'avoir joué. 🎉");
   }
 
   resetRoom(): void {
     if (confirm('Êtes-vous sûr de vouloir recommencer la salle 1 ?')) {
       this.gameState.resetRoom1();
+    }
+  }
+
+  resetCurrentEnigma(): void {
+    if (confirm('Êtes-vous sûr de vouloir réinitialiser cette énigme ?')) {
+      window.location.reload();
     }
   }
 }

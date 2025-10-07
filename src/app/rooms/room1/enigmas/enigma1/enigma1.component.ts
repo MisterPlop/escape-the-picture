@@ -1,4 +1,4 @@
-import { Component, signal, Output, EventEmitter } from '@angular/core';
+import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,8 +8,10 @@ import { CommonModule } from '@angular/common';
   templateUrl: './enigma1.component.html',
   styleUrl: './enigma1.component.scss',
 })
-export class Enigma1Component {
+export class Enigma1Component implements OnInit, OnDestroy {
   @Output() solved = new EventEmitter<void>();
+
+  private devSolveListener?: (event: Event) => void;
 
   mouseX = signal(0);
   mouseY = signal(0);
@@ -22,6 +24,24 @@ export class Enigma1Component {
   };
 
   private revealRadius = 10; // Rayon de révélation
+
+  ngOnInit(): void {
+    this.devSolveListener = () => this.devSolve();
+    window.addEventListener('dev-solve-enigma', this.devSolveListener);
+  }
+
+  ngOnDestroy(): void {
+    if (this.devSolveListener) {
+      window.removeEventListener('dev-solve-enigma', this.devSolveListener);
+    }
+  }
+
+  devSolve(): void {
+    this.revealed.set(true);
+    setTimeout(() => {
+      this.solved.emit();
+    }, 500);
+  }
 
   onMouseMove(event: MouseEvent): void {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();

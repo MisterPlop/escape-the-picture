@@ -1,4 +1,4 @@
-import { Component, signal, Output, EventEmitter } from '@angular/core';
+import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -9,8 +9,10 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './enigma2.component.html',
   styleUrl: './enigma2.component.scss',
 })
-export class Enigma2Component {
+export class Enigma2Component implements OnInit, OnDestroy {
   @Output() solved = new EventEmitter<string>();
+
+  private devSolveListener?: (event: Event) => void;
 
   // Coordonnées de souris pour chaque zone
   redZoneMouseX = signal(0);
@@ -56,6 +58,31 @@ export class Enigma2Component {
     top: Math.random() * 60 + 20, // Entre 20% et 80%
     left: Math.random() * 60 + 20, // Entre 20% et 80%
   };
+
+  ngOnInit(): void {
+    this.devSolveListener = () => this.devSolve();
+    window.addEventListener('dev-solve-enigma', this.devSolveListener);
+  }
+
+  ngOnDestroy(): void {
+    if (this.devSolveListener) {
+      window.removeEventListener('dev-solve-enigma', this.devSolveListener);
+    }
+  }
+
+  devSolve(): void {
+    this.redDiscovered.set(true);
+    this.yellowDiscovered.set(true);
+    this.redZoneRevealed.set(true);
+    this.yellowZoneRevealed.set(true);
+    this.redValue.set(223);
+    this.greenValue.set(152);
+    this.blueValue.set(108);
+    this.isSuccess.set(true);
+    setTimeout(() => {
+      this.solved.emit(this.TARGET_COLOR);
+    }, 500);
+  }
 
   onRedZoneMouseMove(event: MouseEvent): void {
     const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();

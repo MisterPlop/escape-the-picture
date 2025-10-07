@@ -25,12 +25,17 @@
     }
   }
 
-  .reset-btn {
+  .header-actions {
     position: absolute;
     top: 1.5rem;
     right: 2rem;
+    display: flex;
+    gap: 1rem;
+  }
+
+  .reset-btn,
+  .reset-enigma-btn {
     padding: 0.5rem 1rem;
-    background: #e74c3c;
     color: white;
     border: none;
     border-radius: 8px;
@@ -39,8 +44,23 @@
     transition: all 0.3s ease;
 
     &:hover {
-      background: #c0392b;
       transform: translateY(-2px);
+    }
+  }
+
+  .reset-btn {
+    background: #e74c3c;
+
+    &:hover {
+      background: #c0392b;
+    }
+  }
+
+  .reset-enigma-btn {
+    background: #f39c12;
+
+    &:hover {
+      background: #d68910;
     }
   }
 }
@@ -111,7 +131,8 @@
 }
 
 @keyframes pulse {
-  0%, 100% {
+  0%,
+  100% {
     transform: scale(1);
   }
   50% {

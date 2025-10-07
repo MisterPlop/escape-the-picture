@@ -1,85 +1,137 @@
 <div class="enigma3-container">
   <div class="enigma-header">
-    <h2>Énigme 3 : Découvre la suite de chiffres</h2>
-    <button class="hint-btn" (click)="toggleHint()">
-      {{ showHint() ? '✕' : '💡' }} Indice
-    </button>
+    <h2>Énigme 3</h2>
+    <div class="header-buttons">
+      <button class="hint-btn" (click)="toggleHint()">{{ showHint() ? '✕' : '💡' }} Indice</button>
+    </div>
   </div>
 
   @if (showHint()) {
-    <div class="hint-box">
-      <p>L'artiste signe toujours ses œuvres...</p>
-      <p>Chaque lettre cache un nombre. L'alphabet détient la clé !</p>
-      <p>💡 A=1, B=2, C=3... et ainsi de suite</p>
-    </div>
-  }
+  <div class="hint-box">
+    <p>L'artiste signe toujours ses œuvres...</p>
+    <p>Chaque lettre cache un nombre. L'alphabet détient la clé !</p>
+    <p>💡 A=1, B=2, C=3... et ainsi de suite</p>
 
-  <div class="artist-reveal">
-    <h3>L'artiste</h3>
-    <div class="artist-name">
-      <span class="name-text">Pablo</span>
-      <span class="name-highlight">{{ artistName }}</span>
-    </div>
-  </div>
-
-  <div class="letter-grid">
-    @for (hint of letterHints(); track hint.letter + hint.position) {
-      <div 
-        class="letter-card"
-        [class.revealed]="hint.revealed"
-        (click)="revealLetter($index)"
-      >
-        <div class="card-front">
-          <span class="letter">{{ hint.letter }}</span>
-          <span class="position-hint">Lettre {{ hint.position }}</span>
+    @if (artistFound()) {
+    <div class="alphabet-helper">
+      <p class="helper-title">Aide : Correspondance alphabétique</p>
+      <div class="alphabet-grid">
+        @for (num of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]; track
+        num) {
+        <div class="alphabet-item">
+          <span class="letter">{{ String.fromCharCode(64 + num) }}</span>
+          <span class="number">{{ num }}</span>
         </div>
-        <div class="card-back">
-          <span class="value">{{ hint.value }}</span>
-          <span class="explanation">{{ hint.letter }} = {{ hint.value }}</span>
-        </div>
+        }
       </div>
+    </div>
     }
   </div>
+  }
 
-  <div class="sequence-input-section">
-    <p class="instructions">
-      🔢 Quelle est la suite de chiffres ? (séparés par des virgules)
-    </p>
-    
+  <!-- Phase 1 : Deviner l'artiste (style Tusmo) -->
+  <div class="artist-guess-section" [class.completed]="artistFound()">
+    <h3>🎨 Qui suis-je ?</h3>
+    <!-- Affichage des tentatives précédentes -->
+    @if (artistGuessAttempts().length > 0) {
+    <div class="attempts-list">
+      @for (attempt of artistGuessAttempts(); track $index) {
+      <div class="attempt-row">
+        @for (letterFeedback of getPaddedAttempt(attempt); track $index) {
+        <div
+          class="letter-box"
+          [class]="letterFeedback.status"
+          [class.empty]="letterFeedback.letter === ''"
+        >
+          {{ letterFeedback.letter === ' ' ? '␣' : letterFeedback.letter }}
+        </div>
+        }
+      </div>
+      }
+    </div>
+    }
+
+    <!-- Placeholder visuel avec le bon nombre de cases -->
+    @if (artistGuessAttempts().length === 0) {
+    <div class="placeholder-row">
+      @for (i of [0,1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+      <div class="letter-box placeholder"></div>
+      }
+    </div>
+    } @if (!artistFound()) {
     <div class="input-group">
-      <input 
-        type="text" 
-        [(ngModel)]="sequenceInput"
-        placeholder="16,9,3,1,19,19,15"
-        class="sequence-input"
-        [class.error]="attemptFailed()"
-        (keyup.enter)="onSequenceSubmit()"
+      <input
+        type="text"
+        [(ngModel)]="artistGuess"
+        placeholder="PABLO PICASSO"
+        class="artist-input"
+        [class.error]="artistAttemptFailed()"
+        (input)="formatArtistInput($event)"
+        (keyup.enter)="onArtistGuessSubmit()"
+        maxlength="14"
       />
-      <button 
-        class="submit-btn"
-        (click)="onSequenceSubmit()"
-        [disabled]="!sequenceInput()"
-      >
+      <button class="submit-btn" (click)="onArtistGuessSubmit()" [disabled]="!artistGuess()">
         Valider
       </button>
     </div>
 
-    @if (attemptFailed()) {
-      <div class="error-message">
-        ❌ Ce n'est pas la bonne suite. Vérifiez les valeurs !
-      </div>
-    }
+    @if (artistAttemptFailed()) {
+    <div class="error-message">❌ Pas tout à fait !</div>
+    } }
+  </div>
 
-    <div class="alphabet-helper">
-      <p class="helper-title">Aide : Correspondance alphabétique</p>
-      <div class="alphabet-grid">
-        @for (num of [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26]; track num) {
-          <div class="alphabet-item">
-            <span class="letter">{{ String.fromCharCode(64 + num) }}</span>
-            <span class="number">{{ num }}</span>
-          </div>
-        }
-      </div>
+  <!-- Phase 2 : Suite de chiffres (après avoir trouvé l'artiste) -->
+  @if (artistFound() && showPhase2Content() && !puzzleSolved()) {
+  <div class="artist-reveal">
+    <h3>L'artiste découvert</h3>
+    <div class="artist-name">
+      <span class="name-text">Pablo</span>
+      <span class="name-highlight">{{ getArtistName() }}</span>
     </div>
   </div>
+
+  <div class="letter-grid">
+    @for (card of letterCards(); track $index) {
+    <div class="letter-card">
+      <span class="letter">{{ card.letter }}</span>
+    </div>
+    }
+  </div>
+
+  <div class="sequence-input-section">
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="sequenceInput"
+        (input)="formatSequenceInput($event)"
+        placeholder="16,9,3,1,19,19,15 ou 16 9 3 1 19 19 15"
+        class="sequence-input"
+        [class.error]="sequenceAttemptFailed()"
+        (keyup.enter)="onSequenceSubmit()"
+      />
+      <button class="submit-btn" (click)="onSequenceSubmit()" [disabled]="!sequenceInput()">
+        Valider
+      </button>
+    </div>
+
+    @if (sequenceAttemptFailed()) {
+    <div class="error-message">❌ Ce n'est pas la bonne suite. Vérifiez les valeurs !</div>
+    }
+  </div>
+  }
+
+  <!-- Phase 3 : Succès -->
+  @if (puzzleSolved()) {
+  <div class="success-section">
+    <div class="success-message">
+      <h2>🎉 Félicitations !</h2>
+      <p>Vous avez découvert l'artiste :</p>
+      <div class="artist-name-big">Pablo PICASSO</div>
+      <p class="success-detail">
+        Un génie du cubisme et de l’art moderne, dont le talent n’a été véritablement reconnu
+        qu’après sa disparition.
+      </p>
+    </div>
+  </div>
+  }
 </div>

@@ -1,51 +1,74 @@
 <div class="room1-container">
   <header class="room-header">
     <div class="header-content">
-      <h1>🎨 Salle 1 : L'Autoportrait Mystérieux</h1>
+      <h1>Salle 1 : L'Autoportrait Mystérieux</h1>
       <div class="progress-bar">
-        <div class="progress-step" [class.active]="currentEnigma() >= 1" [class.completed]="currentEnigma() > 1">
+        <div
+          class="progress-step"
+          [class.active]="currentEnigma() >= 1"
+          [class.completed]="currentEnigma() > 1"
+        >
           <span class="step-number">1</span>
+          @if (currentEnigma() >= 1) {
           <span class="step-label">Découvrir</span>
+          }
         </div>
         <div class="progress-line" [class.active]="currentEnigma() > 1"></div>
-        <div class="progress-step" [class.active]="currentEnigma() >= 2" [class.completed]="currentEnigma() > 2">
+        <div
+          class="progress-step"
+          [class.active]="currentEnigma() >= 2"
+          [class.completed]="currentEnigma() > 2"
+        >
           <span class="step-number">2</span>
+          @if (currentEnigma() >= 2) {
           <span class="step-label">Couleur</span>
+          }
         </div>
         <div class="progress-line" [class.active]="currentEnigma() > 2"></div>
-        <div class="progress-step" [class.active]="currentEnigma() >= 3" [class.completed]="currentEnigma() > 3">
+        <div
+          class="progress-step"
+          [class.active]="currentEnigma() >= 3"
+          [class.completed]="currentEnigma() > 3"
+        >
           <span class="step-number">3</span>
+          @if (currentEnigma() >= 3) {
           <span class="step-label">Chiffres</span>
+          }
         </div>
         <div class="progress-line" [class.active]="currentEnigma() > 3"></div>
-        <div class="progress-step" [class.active]="currentEnigma() >= 4" [class.completed]="isComplete()">
+        <div
+          class="progress-step"
+          [class.active]="currentEnigma() >= 4"
+          [class.completed]="isComplete()"
+        >
           <span class="step-number">✓</span>
+          @if (currentEnigma() >= 4) {
           <span class="step-label">Complété</span>
+          }
         </div>
       </div>
-      <button class="reset-btn" (click)="resetRoom()">
-        🔄 Recommencer
-      </button>
+      <div class="header-actions">
+        <button class="reset-btn" (click)="resetRoom()">🔄 Recommencer tout</button>
+        <button class="reset-enigma-btn" (click)="resetCurrentEnigma()">
+          ↺ Réinitialiser l'énigme
+        </button>
+      </div>
     </div>
   </header>
 
   <main class="room-content">
     @if (!isComplete()) {
-      <div class="enigma-wrapper">
-        @switch (currentEnigma()) {
-          @case (1) {
-            <app-enigma1 (solved)="onEnigma1Solved()"></app-enigma1>
-          }
-          @case (2) {
-            <app-enigma2 (solved)="onEnigma2Solved($event)"></app-enigma2>
-          }
-          @case (3) {
-            <app-enigma3 (solved)="onEnigma3Solved($event)"></app-enigma3>
-          }
-        }
-      </div>
+    <div class="enigma-wrapper">
+      @switch (currentEnigma()) { @case (1) {
+      <app-enigma1 (solved)="onEnigma1Solved()"></app-enigma1>
+      } @case (2) {
+      <app-enigma2 (solved)="onEnigma2Solved($event)"></app-enigma2>
+      } @case (3) {
+      <app-enigma3 (solved)="onEnigma3Solved($event)" (reset)="resetCurrentEnigma()"></app-enigma3>
+      } }
+    </div>
     } @else {
-      <app-final-reveal (continueToRoom2)="onContinueToRoom2()"></app-final-reveal>
+    <app-final-reveal (continueToRoom2)="onContinueToRoom2()"></app-final-reveal>
     }
   </main>
 

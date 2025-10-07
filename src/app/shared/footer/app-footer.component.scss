@@ -1,0 +1,29 @@
+.app-footer {
+  position: relative;
+}
+
+// Bouton dev discret
+.dev-footer {
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  z-index: 1000;
+}
+
+.dev-solve-btn {
+  background: rgba(149, 165, 166, 0.3);
+  border: none;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: all 0.3s ease;
+
+  &:hover {
+    opacity: 1;
+    background: rgba(149, 165, 166, 0.6);
+    transform: scale(1.1);
+  }
+}
