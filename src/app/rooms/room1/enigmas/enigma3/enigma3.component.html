@@ -65,7 +65,7 @@
       <input
         type="text"
         [(ngModel)]="artistGuess"
-        placeholder="PABLO PICASSO"
+        placeholder="Kylian M'Bappé"
         class="artist-input"
         [class.error]="artistAttemptFailed()"
         (input)="formatArtistInput($event)"
@@ -105,8 +105,7 @@
       <input
         type="text"
         [(ngModel)]="sequenceInput"
-        (input)="formatSequenceInput($event)"
-        placeholder="16,9,3,1,19,19,15 ou 16 9 3 1 19 19 15"
+        placeholder="42,0,13,37 ou 42 0 13 37"
         class="sequence-input"
         [class.error]="sequenceAttemptFailed()"
         (keyup.enter)="onSequenceSubmit()"

@@ -51,9 +51,9 @@
     }
   </div>
 
-  <!-- Section d'entrée de date -->
+  <!-- Section d'entrée de la date -->
   <div class="date-input-section">
-    <label for="birthdate">Trouvez la date :</label>
+    <label for="birthdate">Date :</label>
     <input
       type="text"
       id="birthdate"
@@ -61,14 +61,14 @@
       (input)="formatDateInput($event)"
       (keypress)="onKeyPress($event)"
       (blur)="checkDate()"
-      placeholder="JJ/MM/AAAA"
+      (keyup.enter)="checkDate()"
+      placeholder="09/11/2001"
       maxlength="10"
       class="date-input"
       [class.error]="dateAttemptFailed()"
     />
     <button type="button" class="validate-btn" (click)="checkDate()">Valider</button>
   </div>
-
   @if (dateAttemptFailed()) {
   <div class="error-message">❌ Ce n'est pas la bonne date. Réessayez !</div>
   } } @else {

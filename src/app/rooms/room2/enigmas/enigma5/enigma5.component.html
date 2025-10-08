@@ -49,7 +49,7 @@
 
   <!-- Section d'entrée de réponse -->
   <div class="answer-input-section">
-    <label for="answer">Ville de naissance :</label>
+    <label for="answer">Ville :</label>
     <input
       type="text"
       id="answer"
@@ -58,7 +58,7 @@
       (keypress)="onKeyPress($event)"
       (blur)="checkAnswer()"
       (keyup.enter)="checkAnswer()"
-      placeholder="MALAGA"
+      placeholder="Ibiza"
       class="answer-input"
       [class.error]="answerAttemptFailed()"
     />

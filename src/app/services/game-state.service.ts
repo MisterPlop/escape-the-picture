@@ -33,6 +33,12 @@ export class GameStateService {
     this.gameState.set(state);
   }
 
+  // Suppression de la sauvegarde
+  clearSave(): void {
+    localStorage.removeItem(this.STORAGE_KEY);
+    this.gameState.set(INITIAL_GAME_STATE);
+  }
+
   // Getters
   getRoom1State(): Room1State {
     return this.gameState().room1;
@@ -111,6 +117,46 @@ export class GameStateService {
     });
   }
 
+  resetCurrentEnigmaRoom1(enigmaNumber: number): void {
+    const state = this.gameState();
+    const room1 = state.room1;
+
+    switch (enigmaNumber) {
+      case 1:
+        this.saveState({
+          ...state,
+          room1: {
+            ...room1,
+            enigma1Solved: false,
+            currentEnigma: 1,
+          },
+        });
+        break;
+      case 2:
+        this.saveState({
+          ...state,
+          room1: {
+            ...room1,
+            enigma2Solved: false,
+            discoveredColor: '',
+            currentEnigma: 2,
+          },
+        });
+        break;
+      case 3:
+        this.saveState({
+          ...state,
+          room1: {
+            ...room1,
+            enigma3Solved: false,
+            discoveredSequence: '',
+            currentEnigma: 3,
+          },
+        });
+        break;
+    }
+  }
+
   // Room 2 methods
   getRoom2State(): Room2State {
     return this.gameState().room2;
@@ -178,5 +224,46 @@ export class GameStateService {
       ...state,
       room2: INITIAL_GAME_STATE.room2,
     });
+  }
+
+  resetCurrentEnigmaRoom2(enigmaNumber: number): void {
+    const state = this.gameState();
+    const room2 = state.room2;
+
+    switch (enigmaNumber) {
+      case 4:
+        this.saveState({
+          ...state,
+          room2: {
+            ...room2,
+            enigma4Solved: false,
+            discoveredDate: '',
+            currentEnigma: 4,
+          },
+        });
+        break;
+      case 5:
+        this.saveState({
+          ...state,
+          room2: {
+            ...room2,
+            enigma5Solved: false,
+            enigma5Result: '',
+            currentEnigma: 5,
+          },
+        });
+        break;
+      case 6:
+        this.saveState({
+          ...state,
+          room2: {
+            ...room2,
+            enigma6Solved: false,
+            enigma6Result: '',
+            currentEnigma: 6,
+          },
+        });
+        break;
+    }
   }
 }

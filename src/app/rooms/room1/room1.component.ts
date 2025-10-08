@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit, OnDestroy } from '@angular/core';
+import { Component, computed, inject, OnInit, OnDestroy, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { GameStateService } from '../../services/game-state.service';
@@ -28,6 +28,14 @@ export class Room1Component implements OnInit, OnDestroy {
 
   currentEnigma = computed(() => this.gameState.getCurrentEnigma());
   isComplete = computed(() => this.gameState.isRoom1Complete());
+
+  constructor() {
+    // Remonter en haut à chaque changement d'énigme
+    effect(() => {
+      this.currentEnigma();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 
   ngOnInit(): void {
     this.resetAllListener = () => this.resetRoom();
@@ -68,7 +76,9 @@ export class Room1Component implements OnInit, OnDestroy {
   }
 
   resetCurrentEnigma(): void {
-    if (confirm('Êtes-vous sûr de vouloir réinitialiser cette énigme ?')) {
+    const currentEnigma = this.currentEnigma();
+    if (confirm(`Êtes-vous sûr de vouloir réinitialiser l'énigme ${currentEnigma} ?`)) {
+      this.gameState.resetCurrentEnigmaRoom1(currentEnigma);
       window.location.reload();
     }
   }

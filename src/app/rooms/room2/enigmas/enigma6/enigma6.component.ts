@@ -2,6 +2,7 @@ import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@ang
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { StoryIntroComponent } from '../../../../shared/story-intro/story-intro.component';
+import { RickrollVideoComponent } from '../../../../shared/rickroll-video/rickroll-video.component';
 
 interface Clue {
   id: number;
@@ -19,7 +20,7 @@ interface Clue {
 @Component({
   selector: 'app-enigma6',
   standalone: true,
-  imports: [CommonModule, FormsModule, StoryIntroComponent],
+  imports: [CommonModule, FormsModule, StoryIntroComponent, RickrollVideoComponent],
   templateUrl: './enigma6.component.html',
   styleUrl: './enigma6.component.scss',
 })
@@ -142,12 +143,30 @@ export class Enigma6Component implements OnInit, OnDestroy {
     this.userAnswer.set(input.value.toUpperCase());
   }
 
+  rickrollActive = signal(false);
+
   checkAnswer(): void {
     const answer = this.userAnswer().trim();
 
     // Si la réponse est vide, ne rien faire
     if (answer.length === 0) {
+      this.rickrollActive.set(false);
       return;
+    }
+
+    // Normaliser la réponse pour la comparaison (enlever les accents et mettre en minuscules)
+    const normalizedAnswer = answer
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, ''); // Enlève les accents
+
+    // Si c'est une variante de "sphère" ou "sphérique" → Rick Roll !
+    if (normalizedAnswer.includes('sphere') || normalizedAnswer.includes('spherique')) {
+      this.rickrollActive.set(true);
+      this.answerAttemptFailed.set(false);
+      return;
+    } else {
+      this.rickrollActive.set(false);
     }
 
     // Si c'est la bonne réponse

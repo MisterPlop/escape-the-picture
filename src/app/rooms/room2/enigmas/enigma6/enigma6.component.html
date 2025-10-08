@@ -52,7 +52,7 @@
 
   <!-- Section d'entrée de réponse -->
   <div class="answer-input-section">
-    <label for="answer">Mouvement artistique :</label>
+    <label for="answer">Mouvement :</label>
     <input
       type="text"
       id="answer"
@@ -61,15 +61,19 @@
       (keypress)="onKeyPress($event)"
       (blur)="checkAnswer()"
       (keyup.enter)="checkAnswer()"
-      placeholder="CUBISME"
+      placeholder="Naturisme"
       class="answer-input"
       [class.error]="answerAttemptFailed()"
     />
     <button type="button" class="validate-btn" (click)="checkAnswer()">Valider</button>
   </div>
 
+  @if (rickrollActive()) {
+    <app-rickroll-video></app-rickroll-video>
+  }
+
   @if (answerAttemptFailed()) {
-  <div class="error-message">❌ Ce n'est pas le bon mouvement artistique. Réessayez !</div>
+    <div class="error-message">❌ Ce n'est pas le bon mouvement artistique. Réessayez !</div>
   } } @else {
   <!-- Message de succès -->
   <div class="success-message">
