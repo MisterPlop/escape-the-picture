@@ -1,9 +1,79 @@
 <div class="enigma6-container">
   <div class="enigma-header">
-    <h2>Énigme 6</h2>
+    <h2>Énigme 6 : Mouvement artistique</h2>
+    <button class="hint-btn" (click)="toggleHint()">{{ showHint() ? '✕' : '💡' }} Indice</button>
   </div>
 
-  <div class="placeholder-content">
-    <p>🚧 Énigme en cours de développement...</p>
+  @if (showHint()) {
+  <div class="hint-box">
+    <p>
+      Observez les formes et les indices... Tout semble rond, mais quel est le mouvement artistique
+      de Picasso ?
+    </p>
   </div>
+  } @if (!puzzleSolved()) {
+  <!-- Image avec zones cliquables -->
+  <div class="image-container">
+    <img src="assets/images/enigme-6.png" alt="Indices visuels" class="clue-image" />
+
+    <!-- Zones cliquables superposées (rectangles invisibles) -->
+    @for (clue of clues(); track clue.id) {
+    <div
+      class="clue-zone"
+      [class.discovered]="clue.discovered"
+      [style.left.%]="clue.x"
+      [style.top.%]="clue.y"
+      [style.width.px]="clue.width"
+      [style.height.px]="clue.height"
+      (click)="onClueClick(clue)"
+      [title]="clue.discovered ? '✓ Découvert' : 'Cliquez pour découvrir'"
+    ></div>
+    }
+  </div>
+
+  <!-- Panneau des indices découverts -->
+  <div class="clues-panel">
+    <h3>Indices découverts</h3>
+    @if (discoveredClues.length === 0) {
+    <p class="no-clues">Cliquez sur l'image pour découvrir les indices...</p>
+    } @else {
+    <div class="clues-grid">
+      @for (clue of discoveredClues; track clue.id) {
+      <div class="clue-card">
+        <h4>{{ clue.title }}</h4>
+        <p>{{ clue.content }}</p>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- Section d'entrée de réponse -->
+  <div class="answer-input-section">
+    <label for="answer">Mouvement artistique :</label>
+    <input
+      type="text"
+      id="answer"
+      [value]="userAnswer()"
+      (input)="formatInput($event)"
+      (keypress)="onKeyPress($event)"
+      (blur)="checkAnswer()"
+      (keyup.enter)="checkAnswer()"
+      placeholder="CUBISME"
+      class="answer-input"
+      [class.error]="answerAttemptFailed()"
+    />
+    <button type="button" class="validate-btn" (click)="checkAnswer()">Valider</button>
+  </div>
+
+  @if (answerAttemptFailed()) {
+  <div class="error-message">❌ Ce n'est pas le bon mouvement artistique. Réessayez !</div>
+  } } @else {
+  <!-- Message de succès -->
+  <div class="success-message">
+    <div class="success-icon">✓</div>
+    <h3>Bravo !</h3>
+    <p>Pablo Picasso est le co-fondateur du mouvement Cubiste !</p>
+  </div>
+  }
 </div>
