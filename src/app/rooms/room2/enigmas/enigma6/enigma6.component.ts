@@ -39,32 +39,32 @@ export class Enigma6Component implements OnInit, OnDestroy {
     // VRAIS INDICES (5)
     {
       id: 1,
-      x: (743 / 1536) * 100, // 743px → 48.37%
+      x: (755 / 1536) * 100, // 743px → 48.37%
       y: (813 / 1024) * 100, // 813px → 79.39%
-      width: 161,
-      height: 62,
+      width: 60,
+      height: 25,
       isReal: true,
       title: 'Couverture de livre',
-      content: 'L\'art tourne ROND ?',
+      content: "L'art tourne ROND ?",
       discovered: false,
     },
     {
       id: 2,
       x: (310 / 1536) * 100, // 310px → 20.18%
       y: (800 / 1024) * 100, // 800px → 78.13%
-      width: 126,
-      height: 96,
+      width: 50,
+      height: 50,
       isReal: true,
       title: 'Une sphère',
-      content: 'C\'est très... rond',
+      content: "C'est très... rond",
       discovered: false,
     },
     {
       id: 3,
       x: (476 / 1536) * 100, // 476px → 30.99%
       y: (636 / 1024) * 100, // 636px → 62.11%
-      width: 312,
-      height: 80,
+      width: 145,
+      height: 65,
       isReal: true,
       title: 'Couvertures de livres',
       content: 'Elles forment presque un mot...',
@@ -72,10 +72,10 @@ export class Enigma6Component implements OnInit, OnDestroy {
     },
     {
       id: 4,
-      x: (1155 / 1536) * 100, // 1155px → 75.20%
-      y: (249 / 1024) * 100, // 249px → 24.32%
-      width: 285,
-      height: 285,
+      x: (1160 / 1536) * 100, // 1155px → 75.20%
+      y: (250 / 1024) * 100, // 249px → 24.32%
+      width: 110,
+      height: 120,
       isReal: true,
       title: 'Un miroir',
       content: 'Dans un miroir, voit-on réellement le vrai reflet des choses ?',
@@ -85,8 +85,8 @@ export class Enigma6Component implements OnInit, OnDestroy {
       id: 5,
       x: (535 / 1536) * 100, // 535px → 34.83%
       y: (365 / 1024) * 100, // 365px → 35.64%
-      width: 78,
-      height: 78,
+      width: 28,
+      height: 28,
       isReal: true,
       title: 'Un autoportrait',
       content: 'Signé P.P.',
@@ -124,7 +124,7 @@ export class Enigma6Component implements OnInit, OnDestroy {
     // Autoriser uniquement les lettres (a-z, A-Z)
     if (
       !(charCode >= 65 && charCode <= 90) && // A-Z
-      !(charCode >= 97 && charCode <= 122)   // a-z
+      !(charCode >= 97 && charCode <= 122) // a-z
     ) {
       event.preventDefault();
       return false;
