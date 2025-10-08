@@ -1,4 +1,6 @@
 <div class="enigma4-container">
+  <app-story-intro [text]="storyText"></app-story-intro>
+
   <div class="enigma-header">
     <h2>Énigme 4</h2>
     <button class="hint-btn" (click)="toggleHint()">{{ showHint() ? '✕' : '💡' }} Indice</button>

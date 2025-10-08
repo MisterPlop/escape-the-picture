@@ -1,11 +1,12 @@
 import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StoryIntroComponent } from '../../../../shared/story-intro/story-intro.component';
 
 @Component({
   selector: 'app-enigma2',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, StoryIntroComponent],
   templateUrl: './enigma2.component.html',
   styleUrl: './enigma2.component.scss',
 })
@@ -13,6 +14,9 @@ export class Enigma2Component implements OnInit, OnDestroy {
   @Output() solved = new EventEmitter<string>();
 
   private devSolveListener?: (event: Event) => void;
+
+  storyText =
+    "Le portrait révélé semble être celui d'un grand maître... Mais qui est-il ? Sur le mur adjacent, vous remarquez une installation étrange : des zones de couleurs mystérieuses qui semblent cacher un message. Peut-être un indice sur l'identité de l'artiste ?";
 
   // Coordonnées de souris pour chaque zone
   redZoneMouseX = signal(0);

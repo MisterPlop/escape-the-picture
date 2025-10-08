@@ -1,6 +1,7 @@
 import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StoryIntroComponent } from '../../../../shared/story-intro/story-intro.component';
 
 interface Clue {
   id: number;
@@ -18,7 +19,7 @@ interface Clue {
 @Component({
   selector: 'app-enigma6',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, StoryIntroComponent],
   templateUrl: './enigma6.component.html',
   styleUrl: './enigma6.component.scss',
 })
@@ -26,6 +27,9 @@ export class Enigma6Component implements OnInit, OnDestroy {
   @Output() solved = new EventEmitter<string>();
 
   private devSolveListener?: (event: Event) => void;
+
+  storyText =
+    "Vous approchez du but final. Dans cette dernière section, une installation artistique énigmatique vous attend. Les formes semblent trompeuses, l'œil est trompé... Mais au-delà des apparences, quel courant artistique a révolutionné l'art moderne grâce à cet artiste ?";
 
   puzzleSolved = signal(false);
   userAnswer = signal('');

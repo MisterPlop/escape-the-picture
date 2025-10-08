@@ -2,6 +2,7 @@ import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@ang
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LOCATION_UPGRADE_CONFIGURATION } from '@angular/common/upgrade';
+import { StoryIntroComponent } from '../../../../shared/story-intro/story-intro.component';
 
 interface Clue {
   id: number;
@@ -19,7 +20,7 @@ interface Clue {
 @Component({
   selector: 'app-enigma4',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, StoryIntroComponent],
   templateUrl: './enigma4.component.html',
   styleUrl: './enigma4.component.scss',
 })
@@ -27,6 +28,9 @@ export class Enigma4Component implements OnInit, OnDestroy {
   @Output() solved = new EventEmitter<string>();
 
   private devSolveListener?: (event: Event) => void;
+
+  storyText =
+    "Vous pénétrez dans une nouvelle salle, plus sombre et mystérieuse. Des documents d'archives sont exposés sous verre. Pour comprendre l'œuvre de cet artiste, vous devez remonter à ses origines. Quand tout a-t-il commencé ?";
 
   puzzleSolved = signal(false);
   userDate = signal('');

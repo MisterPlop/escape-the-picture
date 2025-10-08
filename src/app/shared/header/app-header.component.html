@@ -2,8 +2,28 @@
   <div class="app-title">
     <h1>🖼️ Escape The Picture</h1>
     <div class="header-actions">
-      <button class="reset-btn" (click)="onResetAll()">🔄 Recommencer tout</button>
+      <button class="home-btn" (click)="showHomeConfirmation()">🏠 Retour à l'accueil</button>
+      <button class="reset-btn" (click)="onResetAll()">🔄 Recommencer la salle</button>
       <button class="reset-enigma-btn" (click)="onResetEnigma()">↺ Réinitialiser l'énigme</button>
     </div>
   </div>
+
+  @if (showHomeWarning()) {
+  <div class="modal-overlay" (click)="cancelHomeNavigation()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h2>⚠️ Attention</h2>
+      </div>
+      <div class="modal-body">
+        <p>Vous êtes sur le point de retourner à l'accueil.</p>
+        <p><strong>Toute progression sera perdue !</strong></p>
+        <p>Êtes-vous sûr(e) de vouloir continuer ?</p>
+      </div>
+      <div class="modal-actions">
+        <button class="cancel-btn" (click)="cancelHomeNavigation()">Annuler</button>
+        <button class="confirm-btn" (click)="confirmHomeNavigation()">Confirmer</button>
+      </div>
+    </div>
+  </div>
+  }
 </div>

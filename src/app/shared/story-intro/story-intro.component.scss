@@ -1,0 +1,92 @@
+.story-intro {
+  margin-bottom: 2rem;
+  animation: fadeIn 0.8s ease-in;
+}
+
+.story-content {
+  background-image: url('../../../assets/images/fondbeige.png');
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(101, 67, 33, 0.4);
+  border-radius: 15px;
+  padding: 2rem 2.5rem;
+  position: relative;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(245, 235, 220, 0);
+    border-radius: 13px;
+    z-index: 1;
+  }
+
+  > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  p {
+    font-family: 'Georgia', serif;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #2c1810;
+    margin: 0;
+    padding: 0 2rem;
+    text-align: center;
+    font-style: italic;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.5);
+  }
+}
+
+.quote-icon {
+  font-family: 'Cinzel', serif;
+  font-size: 3rem;
+  color: #8b5a2b;
+  opacity: 0.6;
+  line-height: 1;
+  position: relative;
+  z-index: 2;
+
+  &.opening {
+    float: left;
+    margin-right: 0.5rem;
+    margin-top: -0.3rem;
+  }
+
+  &.closing {
+    float: right;
+    margin-left: 0.5rem;
+    margin-bottom: -0.8rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .story-content {
+    padding: 1.5rem 1.5rem;
+
+    p {
+      font-size: 1rem;
+      padding: 0 1rem;
+    }
+  }
+
+  .quote-icon {
+    font-size: 2.5rem;
+  }
+}

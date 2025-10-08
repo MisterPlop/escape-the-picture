@@ -1,10 +1,11 @@
 import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StoryIntroComponent } from '../../../../shared/story-intro/story-intro.component';
 
 @Component({
   selector: 'app-enigma1',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, StoryIntroComponent],
   templateUrl: './enigma1.component.html',
   styleUrl: './enigma1.component.scss',
 })
@@ -12,6 +13,9 @@ export class Enigma1Component implements OnInit, OnDestroy {
   @Output() solved = new EventEmitter<void>();
 
   private devSolveListener?: (event: Event) => void;
+
+  storyText =
+    'Vous entrez dans la première salle du musée. Les murs sont couverts de tableaux, mais quelque chose attire votre attention : un portrait mystérieux semble se cacher sous une couche de peinture...';
 
   mouseX = signal(0);
   mouseY = signal(0);

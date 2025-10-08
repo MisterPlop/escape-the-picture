@@ -1,6 +1,7 @@
 import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StoryIntroComponent } from '../../../../shared/story-intro/story-intro.component';
 
 interface Clue {
   id: number;
@@ -18,7 +19,7 @@ interface Clue {
 @Component({
   selector: 'app-enigma5',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, StoryIntroComponent],
   templateUrl: './enigma5.component.html',
   styleUrl: './enigma5.component.scss',
 })
@@ -26,6 +27,9 @@ export class Enigma5Component implements OnInit, OnDestroy {
   @Output() solved = new EventEmitter<string>();
 
   private devSolveListener?: (event: Event) => void;
+
+  storyText =
+    "Une date sans lieu ne suffit pas. Sur le mur adjacent, une série de photographies et d'objets semble raconter une histoire de voyage. Quel est le berceau de ce génie artistique ? Quelle ville a vu naître ce maître ?";
 
   puzzleSolved = signal(false);
   userAnswer = signal('');

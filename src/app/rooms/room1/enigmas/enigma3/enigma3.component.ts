@@ -1,6 +1,7 @@
 import { Component, signal, Output, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { StoryIntroComponent } from '../../../../shared/story-intro/story-intro.component';
 
 interface LetterCard {
   letter: string;
@@ -15,7 +16,7 @@ interface LetterFeedback {
 @Component({
   selector: 'app-enigma3',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, StoryIntroComponent],
   templateUrl: './enigma3.component.html',
   styleUrl: './enigma3.component.scss',
 })
@@ -24,6 +25,9 @@ export class Enigma3Component implements OnInit, OnDestroy {
   @Output() reset = new EventEmitter<void>();
 
   private devSolveListener?: (event: Event) => void;
+
+  storyText =
+    "La couleur que vous avez trouvée semble être une signature... Vous vous rapprochez d'un cadre ancien où des lettres mystérieuses sont gravées. Chaque lettre cache un secret numérique. Résolvez cette dernière énigme pour révéler le nom de l'artiste et compléter votre mission !";
 
   // État du jeu
   artistGuess = signal('');
