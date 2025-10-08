@@ -1,14 +1,22 @@
 /* Reset et styles de base */
+ @font-face {
+  font-family: 'Cinzel';
+  src: url('./assets/font/Cinzel-Medium.ttf');
+ }
+
+ @font-face {
+  font-family: 'Adelia';
+  src: url('./assets/font/adelia.otf');
+ }
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: 'Cinzel';
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-image: url('/assets/images/fond.png');
