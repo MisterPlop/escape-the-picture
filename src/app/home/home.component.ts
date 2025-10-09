@@ -14,5 +14,6 @@ export class HomeComponent {
 
   startGame(): void {
     this.router.navigate(['/room1']);
+    localStorage.removeItem('escape-the-picture-state');
   }
 }
