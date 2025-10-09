@@ -161,7 +161,11 @@ export class Enigma6Component implements OnInit, OnDestroy {
       .replace(/[\u0300-\u036f]/g, ''); // Enlève les accents
 
     // Si c'est une variante de "sphère" ou "sphérique" → Rick Roll !
-    if (normalizedAnswer.includes('sphere') || normalizedAnswer.includes('spherique')) || normalizedAnswer.includes('spherisme')){
+    if (
+      normalizedAnswer.includes('sphere') ||
+      normalizedAnswer.includes('spherique') ||
+      normalizedAnswer.includes('spherisme')
+    ) {
       this.rickrollActive.set(true);
       this.answerAttemptFailed.set(false);
       return;
